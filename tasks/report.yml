@@ -2218,31 +2218,31 @@
 - name: "Security Report Generation Template"
   template:
     src: report.j2
-    dest: /tmp/report.txt
+    dest: /home/ansible/report.txt
 
 - name: "Security Report Generation CSV"
   template:
     src: report_csv.j2
-    dest: /tmp/report.csv
+    dest: /home/ansible/report.csv
 
 - name: "Security Report Generation Template for HTML"
   template:
     src: report_html.j2
-    dest: /tmp/report.html
+    dest: /home/ansible/report.html
 
-- name: "Mail ec2 instance information"
+- name: "Mail Report information"
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: jinojoe@gmail.com
-    password: KULANDAI.29
-    to: jinojoe@gmail.com
-    from: jinojoe@gmail.com
-    subject: Disk Report
+    host: "{{smtp_host}}"
+    port: "{{smtp_port}}"
+    username: "{{smtp_username}}"
+    password: "{{smtp_password}}"
+    to: "{{email_to}}"
+    from: "{{email_from}}"
+    subject: OS | HARDENING | REPORT
     subtype: html
     attach:
-      - /tmp/report.csv
-      - /tmp/report.html
-      - /tmp/report.txt
+      - /home/ansible/report.csv
+      - /home/ansible/report.html
+      - /home/ansible/report.txt
   delegate_to: "{{ delegate_host | default('localhost') }}"
   run_once: True
